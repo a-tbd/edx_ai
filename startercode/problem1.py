@@ -5,6 +5,7 @@ Output: CSV set of weights for each datapoint (w_1, w_2, bias)
 '''
 import matplotlib.pyplot as plt
 import numpy as np
+import pylab as pl
 import itertools
 import pdb
 import sys
@@ -31,7 +32,6 @@ class Perceptron(object):
             format = [str(self.weights[0]), str(self.weights[1]), str(self.weights[2])]
             out.write((',').join(format) + '\n')
             self.visualize()
-        plt.show()
         out.close()
 
     def update_weights(self):
@@ -59,15 +59,15 @@ class Perceptron(object):
         for i in range(len(colors)):
             plt.scatter(trans[0][i], trans[1][i], color=colors[i])
         if not self.weights[0] is 0 and not self.weights[1] is 0:
-            plt.plot([0, -self.weights[2]/self.weights[0]], [-self.weights[2]/self.weights[1], 0])
-
-        plt.savefig(filename, dpi=None, facecolor='w', edgecolor='w',
+            (m, b) = pl.polyfit([0, -self.weights[2]/self.weights[0]], [-self.weights[2]/self.weights[1], 0], 1)
+            yp = pl.polyval([m,b], trans[0])
+            plt.plot(trans[0], yp)
+            plt.savefig(filename, dpi=None, facecolor='w', edgecolor='w',
                               orientation='portrait', papertype=None, format=None,
                               transparent=False, bbox_inches=None, pad_inches=0.1,
                               frameon=None)
         plt.cla()
         self.figure += 1
-
 
 def main(argv):
     try:
