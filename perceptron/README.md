@@ -7,4 +7,4 @@ Sample input and output data included in the startercode folder.
 The Perceptron class also produces a visualization of the resulting decision boundary at each step.
 Gif of the results below.
 
-![Perceptron GIF](https://github.com/itsmeava/edx_ai/blob/master/startercode/perceptron.gif)
+![Perceptron GIF](https://github.com/itsmeava/edx_ai/blob/master/perceptron/perceptron.gif)
