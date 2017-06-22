@@ -3,7 +3,8 @@ Perceptron Learning Algorithm
 Input: CSV set of linearly seperable datapoints (x, y, classification)
 Output: CSV set of weights for each datapoint (w_1, w_2, bias)
 '''
-
+import matplotlib.pyplot as plt
+import numpy as np
 import itertools
 import pdb
 import sys
@@ -17,6 +18,7 @@ class Perceptron(object):
         self.features = []
         self.weights = [0,0,0]
         self.prev_w = None
+        self.figure = 0
 
     def set_features(self):
         self.features = [map(int,i) for i in csv.reader(open('input1.csv'))]
@@ -28,6 +30,8 @@ class Perceptron(object):
             self.update_weights()
             format = [str(self.weights[0]), str(self.weights[1]), str(self.weights[2])]
             out.write((',').join(format) + '\n')
+            self.visualize()
+        plt.show()
         out.close()
 
     def update_weights(self):
@@ -47,6 +51,23 @@ class Perceptron(object):
         for i in range(len(row) - 1):
             activation += self.weights[i] * row[i] 
         return 1 if activation > -self.weights[2] else -1
+
+    def visualize(self):
+        filename = '%d.png' % self.figure
+        trans = np.transpose(self.features)
+        colors = ['.10' if i < 0 else '.90' for i in trans[2]]
+        for i in range(len(colors)):
+            plt.scatter(trans[0][i], trans[1][i], color=colors[i])
+        if not self.weights[0] is 0 and not self.weights[1] is 0:
+            plt.plot([0, -self.weights[2]/self.weights[0]], [-self.weights[2]/self.weights[1], 0])
+
+        plt.savefig(filename, dpi=None, facecolor='w', edgecolor='w',
+                              orientation='portrait', papertype=None, format=None,
+                              transparent=False, bbox_inches=None, pad_inches=0.1,
+                              frameon=None)
+        plt.cla()
+        self.figure += 1
+
 
 def main(argv):
     try:
